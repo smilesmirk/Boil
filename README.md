@@ -1,6 +1,6 @@
 # Plonky2-BOIL
 
-This repository contains a proof-of-concept implementation of the BOIL protocol (https://eprint.iacr.org/2024/1993) integrated into Plonky2. The software is not audited and is intended primarily for research purposes.
+This repository contains a proof-of-concept implementation of the BOIL protocol integrated into Plonky2. The software is not audited and is intended primarily for research purposes.
 
 
 ## Documentation
@@ -68,7 +68,6 @@ at your option.
 
 ## Links
 
-- [BOIL: Proof-Carrying Data from Accumulation of Correlated Holographic IOPs](https://eprint.iacr.org/2024/1993)
 - [Polygon Zero's zkEVM](https://github.com/0xPolygonZero/zk_evm), an efficient Type 1 zkEVM built on top of Starky and plonky2
 - [System Zero](https://github.com/0xPolygonZero/system-zero), a zkVM built on top of Starky
 - [Waksman](https://github.com/0xPolygonZero/plonky2-waksman), Plonky2 gadgets for permutation checking using Waksman networks
