@@ -9,8 +9,10 @@ use anyhow::{ensure, Result};
 use hashbrown::HashMap;
 use plonky2_maybe_rayon::*;
 
+use plonky2_field::extension::Extendable;
+
+
 use super::circuit_builder::{LookupChallenges, LookupWire};
-use crate::field::extension::Extendable;
 use crate::field::polynomial::{PolynomialCoeffs, PolynomialValues};
 use crate::field::types::Field;
 use crate::field::zero_poly_coset::ZeroPolyOnCoset;
@@ -148,6 +150,8 @@ where
     let num_challenges = config.num_challenges;
     let quotient_degree = common_data.quotient_degree();
     let degree = common_data.degree();
+
+    println!("! plonk:: prove_with_FRI");
 
     set_lookup_wires(prover_data, common_data, &mut partition_witness)?;
 
@@ -325,7 +329,7 @@ where
     );
     challenger.observe_openings(&openings.to_fri_openings());
     let instance = common_data.get_fri_instance(zeta);
-
+  
     let opening_proof = timed!(
         timing,
         "compute opening proofs",
@@ -359,7 +363,7 @@ where
 }
 
 /// Compute the partial products used in the `Z` polynomials.
-fn all_wires_permutation_partial_products<
+pub fn all_wires_permutation_partial_products<
     F: RichField + Extendable<D>,
     C: GenericConfig<D, F = F>,
     const D: usize,
@@ -386,7 +390,7 @@ fn all_wires_permutation_partial_products<
 /// Compute the partial products used in the `Z` polynomial.
 /// Returns the polynomials interpolating `partial_products(f / g)`
 /// where `f, g` are the products in the definition of `Z`: `Z(g^i) = f / g`.
-fn wires_permutation_partial_products_and_zs<
+pub fn wires_permutation_partial_products_and_zs<
     F: RichField + Extendable<D>,
     C: GenericConfig<D, F = F>,
     const D: usize,
@@ -452,7 +456,7 @@ fn wires_permutation_partial_products_and_zs<
 /// partial polynomials according to `max_quotient_degree_factor`.
 /// As another optimization, Sum and LDC polynomials are shared (in so called partial SLDC polynomials), and the last value
 /// of the last partial polynomial is Sum(end) - LDC(end). If the lookup argument is valid, then it must be equal to 0.
-fn compute_lookup_polys<
+pub fn compute_lookup_polys<
     F: RichField + Extendable<D>,
     C: GenericConfig<D, F = F>,
     const D: usize,
@@ -571,7 +575,7 @@ fn compute_lookup_polys<
 }
 
 /// Computes lookup polynomials for all challenges.
-fn compute_all_lookup_polys<
+pub fn compute_all_lookup_polys<
     F: RichField + Extendable<D>,
     C: GenericConfig<D, F = F>,
     const D: usize,
@@ -603,7 +607,7 @@ fn compute_all_lookup_polys<
 
 const BATCH_SIZE: usize = 32;
 
-fn compute_quotient_polys<
+pub fn compute_quotient_polys<
     'a,
     F: RichField + Extendable<D>,
     C: GenericConfig<D, F = F>,
